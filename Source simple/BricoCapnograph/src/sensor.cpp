@@ -56,9 +56,8 @@ int parseSprintIR(void)
 void setupSprintIR(void)
 {
   Serial.print("Searching SprintIR CO2 sensor...");
-  display.setTextSize(2);
-  display.setTextColor(COLOR_YELLOW);
-  display.print("\nSEARCHING SENSOR:");
+  displayMessage("\nSEARCHING SENSOR:");
+  
   //sensor.begin(9600);   //Other SprintIR sensors
   sensor.begin(38400);   //SprintIR-R 
   sensor.setTimeout(60); //Set parseInt timeout to 60ms
@@ -72,21 +71,24 @@ void setupSprintIR(void)
     if((millis()-loopStart)>100)
     {
         Serial.println("ERROR!\n  Sensor not found, please check your connections and reset!");
-        display.println("\nERROR!\nSENSOR NOT FOUND!");
+        displayMessage("\nERROR!\nSENSOR NOT FOUND!");
+
         while(1);
     }
   }  
   sensorMult = sensor.parseInt();
   Serial.print("Found!\n  Multiplicator is: ");
-  display.print("OK\nMULTIPLICATOR: ");
+
+  displayMessage("OK\nMULTIPLICATOR: ");
   Serial.println(sensorMult);
-  display.println(sensorMult);
+  displayMessage("FIXTHIS");
+  //display.println(sensorMult); FIXTHIS
   sensor.read();                //empty \r from the buffer
   sensor.read();                //empty \n from the buffer
 
   //setup sensor output
   Serial.print("  Waiting for first  data...");
-  display.print("WAITING DATA1:");
+  displayMessage("WAITING DATA1:");
   sensor.println("M 2");        // set output fields to only CO2 raw(z)
   sensor.println("K 1");        // set mode to streaming
   delay(500);
@@ -94,14 +96,14 @@ void setupSprintIR(void)
   if( parseSprintIR() == -1)
   {
       Serial.println("ERROR!\nSensor don´t send data, please check your connections and reset!");
-      display.println("\nERROR!\nSENSOR DON'T SEND DATA!");
+      displayMessage("\nERROR!\nSENSOR DON'T SEND DATA!");
       while(1);
   }
   else
   {
     loopStart = millis();
     Serial.print("  Waiting for second data...");
-    display.print("OK\nWAITING DATA2:");
+    displayMessage("OK\nWAITING DATA2:");
     if(parseSprintIR()!=-1)
     {
       sensorSampleTime = millis()-loopStart;
@@ -118,9 +120,10 @@ void setupSprintIR(void)
       Serial.print("SprintIR CO2 sensor working and sending data each: ");
       Serial.print(sensorSampleTime);
       Serial.println("ms");
-      display.print("OK\nSprintIR SENSOR OK!\nSAMPLE TIME: ");
-      display.print(sensorSampleTime);
-      display.println("ms");
+      displayMessage("OK\nSprintIR SENSOR OK!\nSAMPLE TIME: ");
+      displayMessage("FIXTHIS");
+      //display.print(sensorSampleTime); FIXTHIS
+      //display.println("ms");
       sensor.setTimeout(sensorSampleTime+5); //actualize parseInt timeout
     }
     else

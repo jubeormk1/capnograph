@@ -1,9 +1,31 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
+#define USING_TFT_22_ILI9225
+
+#ifdef  USING_TFT_22_ILI9225
+//Julio's test
+    #include "TFT_22_ILI9225.h"
+    // Fixed size: 176x220
+    // COLORS: Colours are defined in the library
+
+    #define TFT_LED 0  // 3V3 (0 for the library)
+    #define TFT_CLK 18 // IO18: VSPI-SCK
+    #define TFT_SDI 23 // IO23: VSPI-MOSI
+    #define TFT_CS  5  // IO5:  VSPI-SS
+    #define TFT_RS  21 // IO21: GPIO
+    #define TFT_RST 4  // IO4:  GPIO
+    #define TFT_BRIGHTNESS 200 // Initial brightness of TFT backlight (optional)
+    #define SPI_IN_USE VSPI
+
+#else
+
+
+#include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7735.h>
 #include <Adafruit_ST7789.h>
+
 
 // Display config
 #define DISPLAY_CS_PIN  5  // define chip select pin
@@ -26,14 +48,20 @@
 #define COLOR_ORANGE  0xFC00
 
 extern unsigned int samplesPerPixel;
-extern Adafruit_ST7789 display;
+//extern Adafruit_ST7789 display; // hidding the display object to improve modularity
+
+#endif
 
 void setupDisplay(void);
 void printGraph(void);
 void setupGraph(void);
 
+void displayMessage(const char * message);
+
 void printBPM(unsigned int bpm); // belongs to display actually
 void printEtCO2(long bpm); // belongs to display actually
 void printState(const char *state); // belongs to display actually
+
+void displayTest(void);
 
 #endif

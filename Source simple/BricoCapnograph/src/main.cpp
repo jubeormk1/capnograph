@@ -8,16 +8,16 @@ void setup()
 {
   Serial.begin(115200);
   setupDisplay();
-  setupSprintIR();
+  //setupSprintIR();
   setupGraph();
-  display.fillScreen(COLOR_BLACK);
   memset(sensorData, 0, sizeof(sensorData));
   dataIndex=0;
 }
 
 void loop()
 {
-  parseSprintIR();
-  analyzeData();
-  printGraph();
+  displayTest();
+  //parseSprintIR();
+  //analyzeData();
+  //printGraph();
 }
