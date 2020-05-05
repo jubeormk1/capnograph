@@ -2,6 +2,8 @@
 #define DISPLAY_H
 
 #define USING_TFT_22_ILI9225
+//#define USING_ADAFRUIT_ST7735
+//#define USING_ADAFRUIT_ST7789
 
 #ifdef  USING_TFT_22_ILI9225
 //Julio's test
@@ -18,8 +20,7 @@
     #define TFT_BRIGHTNESS 200 // Initial brightness of TFT backlight (optional)
     #define SPI_IN_USE VSPI
 
-#else
-
+#elif defined USING_ADAFRUIT_ST7735 || defined USING_ADAFRUIT_ST7789
 
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -49,11 +50,24 @@
 
 extern unsigned int samplesPerPixel;
 //extern Adafruit_ST7789 display; // hidding the display object to improve modularity
-
+#else
+#error "Please select a LCD to use"
 #endif
 
+/**
+ * @brief  setup the display 
+ * @note   This functions needs to be called before any other methods of this API
+ * @retval None
+ */
 void setupDisplay(void);
+
 void printGraph(void);
+
+/**
+ * @brief  This function sets sensor parameters to optimize the display settings
+ * @note   FixMe. There is no clear interface between sensor and this function
+ * @retval None
+ */
 void setupGraph(void);
 
 void displayMessage(const char * message);
